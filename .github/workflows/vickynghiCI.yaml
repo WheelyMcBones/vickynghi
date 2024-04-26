@@ -1,0 +1,28 @@
+name: GitHub Actions For Vickynghi
+run-name: ${{ github.actor }} is testing out our Tablut player 🤖🐶
+on: [push]
+
+jobs:
+  Build-and-Test:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: List files
+        run: |
+          ls ${{ github.workspace }}
+      - name: Install Packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: build-essential pkg-config libjsoncpp-dev libgtest-dev cmake
+          version: 1.0
+      - name: Create CMAKE Files
+        run: |
+          cmake CMakeLists.txt -DCMAKE_BUILD_TYPE=Release
+      - name: Compile
+        run: |
+          make
+      - name: Run Tests
+        working-directory: ./test
+        run: |
+          ./osarracino_tests_run
