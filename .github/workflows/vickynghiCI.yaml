@@ -22,3 +22,7 @@ jobs:
       - name: Compile
         run: |
           make
+      - name: Run Tests
+        working-directory: ./test
+        run: |
+          ./osarracino_tests_run
