@@ -16,3 +16,9 @@ jobs:
         with:
           packages: build-essential pkg-config libjsoncpp-dev libgtest-dev cmake
           version: 1.0
+      - name: Create CMAKE Files
+        run: |
+          cmake CMakeLists.txt -DCMAKE_BUILD_TYPE=Release
+      - name: Compile
+        run: |
+          make
