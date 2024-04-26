@@ -5,5 +5,9 @@ on: [push]
 jobs:
   Build-and-Test:
     runs-on: ubuntu-latest
-    uses: actions/checkout@v4
-     run: ls ${{ github.workspace }}
+    steps: 
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: List Files
+        run: |
+          ls ${{ github.workspace }}
