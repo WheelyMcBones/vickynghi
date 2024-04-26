@@ -146,7 +146,7 @@ public:
     }
 
     inline bool has_white_or_wall(int col, int row) const {
-        return (board[col][row] & (Pawn::White | Pawn::King | Pawn::EmptyCitadel | Pawn::EmptyThrone)) != 0;
+        return (board[col][row] & (Pawn::White | Pawn::King | Pawn::EmptyThrone)) != 0;
     }
 
     inline bool has_citadel(int col, int row) const {
