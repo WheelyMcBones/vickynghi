@@ -6,8 +6,9 @@ jobs:
   Build-and-Test:
     runs-on: ubuntu-latest
     steps: 
-      - name: Check out repository code and list files
+      - name: Check out repository code
         uses: actions/checkout@v4
+      - name: List files
         run: |
           ls ${{ github.workspace }}
       - name: Install Packages
