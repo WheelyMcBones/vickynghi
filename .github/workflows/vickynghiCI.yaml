@@ -1,0 +1,10 @@
+name: GitHub Actions For Vickynghi
+run-name: ${{ github.actor }} is testing out our Tablut player 🤖🐶
+on: [push]
+
+jobs:
+  Build-and-Test:
+    runs-on: ubuntu-latest
+    uses: actions/checkout@v4
+     run: |
+          ls ${{ github.workspace }}
