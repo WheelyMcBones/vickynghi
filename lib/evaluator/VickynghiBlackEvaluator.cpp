@@ -7,6 +7,7 @@
 #include <bitset>
 #include <algorithm>
 #include <util/BoardUtils.h>
+#include <util/BitUtils.h>
 
 #define  FIRST_QUARTER 4,8,0,4
 #define  SECOND_QUARTER 4,8,4,8
@@ -120,32 +121,33 @@ int BlackEvaluator::evaluate(const Board &b) const {
 
 int BlackEvaluator::geometry_points(const Board &b) const {
 
+    // TODO: fare un'unica mappa per ogni sezione
     if (b.king_pos.row < 4 && b.king_pos.col < 4) { //TOP LEFT
-        return geometry_calculator(b, top_left_color_matrix);
+        return geometry_calculator(b, top_left_color_matrix) + geometry_calculator(b, top_left_larger_diagonal_color_matrix);
 
     } else if (b.king_pos.row < 4 && b.king_pos.col > 4) { //TOP RIGHT
-        return geometry_calculator(b, top_right_color_matrix);
+        return geometry_calculator(b, top_right_color_matrix) + geometry_calculator(b, top_right_larger_diagonal_color_matrix);
 
     } else if (b.king_pos.row > 4 && b.king_pos.col > 4) { //BOTTOM RIGHT
-        return geometry_calculator(b, bottom_right_color_matrix);
+        return geometry_calculator(b, bottom_right_color_matrix) + geometry_calculator(b, bottom_right_larger_diagonal_color_matrix);
 
     } else if (b.king_pos.row > 4 && b.king_pos.col < 4) { // BOTTOM LEFT
-        return geometry_calculator(b, bottom_left_color_matrix);
+        return geometry_calculator(b, bottom_left_color_matrix) + geometry_calculator(b, bottom_left_larger_diagonal_color_matrix);
 
     } else if (b.king_pos.row == 4 && b.king_pos.col < 4) { // LEFT
-        return geometry_calculator(b, left_color_matrix);
+        return geometry_calculator(b, left_color_matrix) + geometry_calculator(b, left_larger_diagonal_color_matrix);
 
     } else if (b.king_pos.row == 4 && b.king_pos.col > 4) { // RIGHT
-        return geometry_calculator(b, right_color_matrix);
+        return geometry_calculator(b, right_color_matrix) + geometry_calculator(b, right_larger_diagonal_color_matrix);
 
     } else if (b.king_pos.row < 4 && b.king_pos.col == 4) { // TOP
-        return geometry_calculator(b, top_color_matrix);
+        return geometry_calculator(b, top_color_matrix) + geometry_calculator(b, top_larger_diagonal_color_matrix);
 
     } else if (b.king_pos.row > 4 && b.king_pos.col == 4) { // DOWN
-        return geometry_calculator(b, bottom_color_matrix);
+        return geometry_calculator(b, bottom_color_matrix) + geometry_calculator(b, bottom_larger_diagonal_color_matrix);
 
     } else {
-        return geometry_calculator(b, color_matrix);
+        return geometry_calculator(b, color_matrix) + geometry_calculator(b, larger_diagonal_color_matrix);
     }
 }
 
@@ -174,6 +176,30 @@ int BlackEvaluator::get_empty_row_down(const Board &b) const {
     }
     return 1;
 }
+
+// get empty row
+int BlackEvaluator::get_number_empty_row(const Board &b) const{
+    int num_empty_row = 0;
+    for(int i = 0; i < 9; i++) {
+        if(__builtin_popcount(b.black_rows[i]) == 0) {
+            num_empty_row++;
+        }
+    }
+    return num_empty_row;
+}
+
+// get empty col
+int BlackEvaluator::get_number_empty_col(const Board &b) const{
+    int num_empty_col = 0;
+    for(int i = 0; i < 9; i++) {
+        if(__builtin_popcount(b.black_cols[i]) == 0){
+            num_empty_col++;
+        }
+    }
+    return num_empty_col;
+}
+
+
 
 int BlackEvaluator::get_empty_row_up(const Board &b) const {
     int row_counter = b.king_pos.row;
