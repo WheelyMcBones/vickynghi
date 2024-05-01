@@ -15,10 +15,16 @@
 #include <search/RamboSearchEngine.h>
 
 int main(int argc, char **argv) {
-    std::cout << " ┌─┐  ┌ ┌─┐ ┌─┐ ┬─┐ ┬─┐ ┌─┐ ┌─┐ ┬ ┌┐┌ ┌─┐ ┐" << std::endl;
-    std::cout << " │ │  │ └─┐ ├─┤ ├┬┘ ├┬┘ ├─┤ │   │ │││ │ │ │" << std::endl;
-    std::cout << " └─┘  └ └─┘ ┴ ┴ ┴└─ ┴└─ ┴ ┴ └─┘ ┴ ┘└┘ └─┘ ┘" << std::endl;
-    std::cout << "    ♫ ♪ ( BEEELLUU FUNTOOREEEE ) ♫ ♪   " << std::endl << std::endl;
+
+    std::cout << "        _      _                      _     _ "<< std::endl;
+    std::cout << "       (_)    | |                    | |   (_)"<< std::endl;
+    std::cout << " __   ___  ___| | ___   _ _ __   __ _| |__  _ "<< std::endl;
+    std::cout << " \\ \\ / / |/ __| |/ / | | | '_ \\ / _` | '_ \\| |"<< std::endl;
+    std::cout << "  \\ V /| | (__|   <| |_| | | | | (_| | | | | |"<< std::endl;
+    std::cout << "   \\_/ |_|\\___|_|\\_\\\\__, |_| |_|\\__, |_| |_|_|"<< std::endl;
+    std::cout << "                     __/ |       __/ |        "<< std::endl;
+    std::cout << "                    |___/       |___/         "<< std::endl;
+    std::cout << "    ♫ ♪ ( woof woof pezzi di merda!  ) ♫ ♪   " << std::endl << std::endl;
 
     // Argument parsing and setup Configurations
     ConfigSet config;
@@ -42,7 +48,7 @@ int main(int argc, char **argv) {
     Connector connector{config.host, config.port};
     std::cout << "Connected!" << std::endl;
     std::cout << "Sending player name... " << std::flush;
-    connector.send_name("osarracino");
+    connector.send_name("vickynghi");
     std::cout << "Done!" << std::endl;
 
     // Increase stack size
