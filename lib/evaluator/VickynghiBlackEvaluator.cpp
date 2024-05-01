@@ -2,7 +2,7 @@
 // Created by freddy on 15/04/19.
 //
 
-#include "BlackEvaluator.h"
+#include "VickynghiBlackEvaluator.h"
 #include <set>
 #include <bitset>
 #include <algorithm>
@@ -15,7 +15,7 @@
 #define  FOURTH_QUARTER 0,4,0,4
 
 //If the blacks is near the king -> bonus points!
-int BlackEvaluator::black_block_king(const Board &b) const {
+int VickynghiBlackEvaluator::black_block_king(const Board &b) const {
     int blocks {0};
 
     auto check_pos = [&b](const Position &pos) ->bool {
@@ -41,18 +41,18 @@ int BlackEvaluator::black_block_king(const Board &b) const {
 }
 
 //Differences of pawns based on quarters! TO TEST
-int BlackEvaluator::pawn_differences(const Board &b) const {
+int VickynghiBlackEvaluator::pawn_differences(const Board &b) const {
     return b.black_count - b.white_count - 1;
 }
 
 
-std::vector<Direction> BlackEvaluator::get_direction_of_move_check(const Board &b) const {
+std::vector<VickynghiBlackEvaluator::Direction> VickynghiBlackEvaluator::get_direction_of_move_check(const Board &b) const {
 
     //King not in place to win.
     auto col = std::find(win_rows_cols.begin(), win_rows_cols.end(), b.king_pos.col);
     auto row = std::find(win_rows_cols.begin(), win_rows_cols.end(), b.king_pos.row);
 
-    std::vector<Direction> positions;
+    std::vector<VickynghiBlackEvaluator::Direction> positions;
 
     // Check obstacle, if a part contains obstacles don't checkit.
 
@@ -93,7 +93,7 @@ std::vector<Direction> BlackEvaluator::get_direction_of_move_check(const Board &
 
 // La color matrix ora si baserà sulla presenza nel quadrante del re!
 
-int BlackEvaluator::evaluate(const Board &b) const {
+int VickynghiBlackEvaluator::evaluate(const Board &b) const {
     //Block the king must be relational in time
     int block_weight = 1;
     int block_the_king = black_block_king(b);
@@ -119,7 +119,7 @@ int BlackEvaluator::evaluate(const Board &b) const {
 
 }
 
-int BlackEvaluator::geometry_points(const Board &b) const {
+int VickynghiBlackEvaluator::geometry_points(const Board &b) const {
 
     // TODO: fare un'unica mappa per ogni sezione
     if (b.king_pos.row < 4 && b.king_pos.col < 4) { //TOP LEFT
@@ -156,7 +156,7 @@ int BlackEvaluator::geometry_points(const Board &b) const {
 // Da considerare riga 2 riga 6
 
 
-int BlackEvaluator::get_empty_row_down(const Board &b) const {
+int VickynghiBlackEvaluator::get_empty_row_down(const Board &b) const {
     //Vedere se il king può arrivare a riga 1,2,6,7!
     int row_counter = 0;
     for (int i = b.king_pos.row+1; i < 7 ; i++) { //UPSIDE
@@ -178,7 +178,7 @@ int BlackEvaluator::get_empty_row_down(const Board &b) const {
 }
 
 // get empty row
-int BlackEvaluator::get_number_empty_row(const Board &b) const{
+int VickynghiBlackEvaluator::get_number_empty_row(const Board &b) const{
     int num_empty_row = 0;
     for(int i = 0; i < 9; i++) {
         if(__builtin_popcount(b.black_rows[i]) == 0) {
@@ -189,7 +189,7 @@ int BlackEvaluator::get_number_empty_row(const Board &b) const{
 }
 
 // get empty col
-int BlackEvaluator::get_number_empty_col(const Board &b) const{
+int VickynghiBlackEvaluator::get_number_empty_col(const Board &b) const{
     int num_empty_col = 0;
     for(int i = 0; i < 9; i++) {
         if(__builtin_popcount(b.black_cols[i]) == 0){
@@ -201,7 +201,7 @@ int BlackEvaluator::get_number_empty_col(const Board &b) const{
 
 
 
-int BlackEvaluator::get_empty_row_up(const Board &b) const {
+int VickynghiBlackEvaluator::get_empty_row_up(const Board &b) const {
     int row_counter = b.king_pos.row;
     for (int i = b.king_pos.row-1; i > 1; i--) { //DOWNSIDE
         if(b.board[b.king_pos.col][i] == Pawn::Empty) {
@@ -221,7 +221,7 @@ int BlackEvaluator::get_empty_row_up(const Board &b) const {
     return 1;
 }
 
-int BlackEvaluator::get_empty_col_right(const Board &b) const {
+int VickynghiBlackEvaluator::get_empty_col_right(const Board &b) const {
     int col_counter = b.king_pos.col;
     for (int i = b.king_pos.col+1; i < 7; i++) { //TO THE RIGHT
         if(b.board[i][b.king_pos.row] == Pawn::Empty) {
@@ -243,7 +243,7 @@ int BlackEvaluator::get_empty_col_right(const Board &b) const {
 }
 
 
-int BlackEvaluator::get_empty_col_left(const Board &b) const {
+int VickynghiBlackEvaluator::get_empty_col_left(const Board &b) const {
     int col_counter = b.king_pos.col;
     for (int i = b.king_pos.col-1; i > 1 ; i--) { //TO THE LEFT
         if(b.board[i][b.king_pos.row] == Pawn::Empty) {
@@ -264,7 +264,7 @@ int BlackEvaluator::get_empty_col_left(const Board &b) const {
 }
 
 
-BlackEvaluator::BlackEvaluator() {
+VickynghiBlackEvaluator::VickynghiBlackEvaluator() {
     geometry_calculator = [](const Board &b, const uint8_t (&matrix)[9][9]) ->int {
         int result {0};
         for (int i = 0; i < 9; i++) {

@@ -2,8 +2,8 @@
 // Created by freddy on 15/04/19.
 //
 
-#ifndef OSARRACINO_BLACKEVALUATOR_H
-#define OSARRACINO_BLACKEVALUATOR_H
+#ifndef OSARRACINO_VICKYNGHIBLACKEVALUATOR_H
+#define OSARRACINO_VICKYNGHIBLACKEVALUATOR_H
 
 #include "Evaluator.h"
 #include <vector>
@@ -12,16 +12,18 @@
 #include <unordered_map>
 #include <functional>
 
-class BlackEvaluator : public Evaluator<BlackEvaluator>{
-private:
+
+class VickynghiBlackEvaluator : public Evaluator<VickynghiBlackEvaluator>{
+private: 
     enum Direction {Up=1, Down=2, Right=3, Left=4, None=false};
     const std::array<int, 4> win_rows_cols = {1, 2, 6, 7};
+
 public:
     std::string get_name() const {
-        return "BlackEvaluator";
+        return "VickynghiBlackEvaluator";
     }
 
-    BlackEvaluator();
+    VickynghiBlackEvaluator();
     int evaluate(const Board &b) const;
     int black_block_king(const Board &b) const;
     int pawn_differences(const Board &b) const;
@@ -276,4 +278,4 @@ public:
 };
 
 
-#endif //OSARRACINO_BLACKEVALUATOR_H
+#endif // OSARRACINO_VICKYNGHIBLACKEVALUATOR_H

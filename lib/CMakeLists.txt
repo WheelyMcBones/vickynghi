@@ -10,6 +10,7 @@ add_library(libosarracino STATIC
         model/Position.cpp model/Position.h
         evaluator/TorettoWhiteEvaluator.cpp evaluator/TorettoWhiteEvaluator.h
         evaluator/BlackEvaluator.cpp evaluator/BlackEvaluator.h
+        evaluator/VickynghiBlackEvaluator.cpp evaluator/VickynghiBlackEvaluator.h
         movegenerator/MoveGenerator.h
         movegenerator/ThetaMoveGenerator.cpp movegenerator/ThetaMoveGenerator.h
         util/BitUtils.h util/BoardUtils.cpp util/BoardUtils.h

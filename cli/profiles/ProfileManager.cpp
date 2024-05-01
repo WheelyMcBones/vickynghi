@@ -9,6 +9,9 @@
 #include "FallbackBlackPlayerProfile.h"
 #include "AggressiveWhitePlayerProfile.h"
 
+#include "VickynghiBlackPlayerProfile.h"
+#include "VickynghiWhitePlayerProfile.h"
+
 ProfileManager::ProfileManager(const ConfigSet &config) : config(config) {
     player_map["default"] = [](Player player) -> ProfilePair {
         if (player == Player::WHITE) {
@@ -37,6 +40,13 @@ ProfileManager::ProfileManager(const ConfigSet &config) : config(config) {
             return ProfilePair{std::make_unique<SimpleWhitePlayerProfile>(), std::make_unique<SimpleWhitePlayerProfile>()};
         }else{
             return ProfilePair{std::make_unique<SimpleBlackPlayerProfile>(), std::make_unique<SimpleBlackPlayerProfile>()};
+        }
+    };
+    player_map["vickynghi"] = [](Player player) -> ProfilePair {
+        if (player == Player::WHITE) {
+            return ProfilePair{std::make_unique<VickynghiWhitePlayerProfile>(), std::make_unique<VickynghiWhitePlayerProfile>()};
+        }else{
+            return ProfilePair{std::make_unique<VickynghiBlackPlayerProfile>(), std::make_unique<VickynghiBlackPlayerProfile>()};
         }
     };
 }

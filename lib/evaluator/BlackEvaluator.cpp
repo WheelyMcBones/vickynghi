@@ -45,13 +45,13 @@ int BlackEvaluator::pawn_differences(const Board &b) const {
 }
 
 
-std::vector<Direction> BlackEvaluator::get_direction_of_move_check(const Board &b) const {
+std::vector<BlackEvaluator::Direction> BlackEvaluator::get_direction_of_move_check(const Board &b) const {
 
     //King not in place to win.
     auto col = std::find(win_rows_cols.begin(), win_rows_cols.end(), b.king_pos.col);
     auto row = std::find(win_rows_cols.begin(), win_rows_cols.end(), b.king_pos.row);
 
-    std::vector<Direction> positions;
+    std::vector<BlackEvaluator::Direction> positions;
 
     // Check obstacle, if a part contains obstacles don't checkit.
 
