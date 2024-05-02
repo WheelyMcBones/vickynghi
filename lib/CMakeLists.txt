@@ -24,10 +24,10 @@ add_library(libosarracino STATIC
         search/ThanosSearchEngine.h
         search/FSMSearchEngine.h evaluator/TheRockWhiteEvaluator.cpp evaluator/TheRockWhiteEvaluator.h)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -I/usr/local/Cellar/jsoncpp/1.9.5/include -L/usr/local/Cellar/jsoncpp/1.9.5/lib -ljsoncpp")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
 
-target_link_libraries(libosarracino ${JSONCPP_LIBRARIES} pthread)
+target_link_libraries(libosarracino "-I/usr/local/Cellar/jsoncpp/1.9.5/include -L/usr/local/Cellar/jsoncpp/1.9.5/lib -ljsoncpp" pthread)
 
 target_include_directories (libosarracino PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

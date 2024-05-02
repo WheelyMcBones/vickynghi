@@ -239,7 +239,7 @@ int BlackEvaluator::get_empty_col_left(const Board &b) const {
 
 
 BlackEvaluator::BlackEvaluator() {
-    geometry_calculator = [](const Board &b, const uint8_t (&matrix)[9][9]) ->int {
+    geometry_calculator = [](const Board &b, const int8_t (&matrix)[9][9]) ->int {
         int result {0};
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
