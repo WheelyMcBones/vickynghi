@@ -108,8 +108,12 @@ int VickynghiBlackEvaluator::evaluate(const Board &b) const {
             block_the_king = 2;
         }
         return (block_the_king * block_weight) +
-               2*pawn_differences(b) +
+               10 * pawn_differences(b) +
+               4 * black_superiority(b) +
                geometry+
+               get_number_empty_factor(b)+
+               //PENALTY_FACTOR * get_number_empty_row(b) +
+               PENALTY_FACTOR * is_in_corner(b) +
                PREVENT_CHECKMATE *
                (get_empty_col_left(b)+
                 get_empty_col_right(b)+
@@ -180,12 +184,44 @@ int VickynghiBlackEvaluator::get_empty_row_down(const Board &b) const {
 // get empty row
 int VickynghiBlackEvaluator::get_number_empty_row(const Board &b) const{
     int num_empty_row = 0;
+    int num_empty_col = 0;
+    int blocked_pawn = 0;
     for(int i = 0; i < 9; i++) {
+        for(int j = 0; j < 9; j++){
+            if(i < 5 && j < 5){
+                if(b.board[i][j] == Pawn::Black && b.board[i][j+1] == Pawn::Black && b.board[i+1][j] == Pawn::Black){
+                    blocked_pawn++;
+                }
+            }
+
+            if(i > 5 && j < 5){
+                if(b.board[i][j] == Pawn::Black && b.board[i][j+1] == Pawn::Black && b.board[i-1][j] == Pawn::Black){
+                    blocked_pawn++;
+                }
+            }
+
+            if(i < 5 && j > 5){
+                if(b.board[i][j] == Pawn::Black && b.board[i][j-1] == Pawn::Black && b.board[i+1][j] == Pawn::Black){
+                    blocked_pawn++;
+                }
+            }
+
+            if(i > 5 && j > 5){
+                if(b.board[i][j] == Pawn::Black && b.board[i][j-1] == Pawn::Black && b.board[i-1][j] == Pawn::Black){
+                    blocked_pawn++;
+                }
+            }
+        }
+
         if(__builtin_popcount(b.black_rows[i]) == 0) {
             num_empty_row++;
         }
+        
+        if(__builtin_popcount(b.black_cols[i]) == 0){
+            num_empty_col++;
+        }
     }
-    return num_empty_row;
+    return (PENALTY_FACTOR) * (num_empty_row + num_empty_col + blocked_pawn);
 }
 
 // get empty col
@@ -242,6 +278,22 @@ int VickynghiBlackEvaluator::get_empty_col_right(const Board &b) const {
     return 1;
 }
 
+int VickynghiBlackEvaluator::is_in_corner(const Board &b) const {
+    if(b.board[0][0] == Pawn::Black || b.board[0][8] == Pawn::Black || b.board[8][0] == Pawn::Black || b.board[8][8] == Pawn::Black){
+        return 1;
+    }
+
+int VickynghiBlackEvaluator::get_empty_col_left(const Board &b) const {
+    return 0;
+}
+
+int VickynghiBlackEvaluator::black_superiority(const Board &b) const {
+    if(b.black_count - b.white_count > 10){
+        return b.black_count - b.white_count;
+    }
+
+    return 0;
+}
 
 int VickynghiBlackEvaluator::get_empty_col_left(const Board &b) const {
     int col_counter = b.king_pos.col;
@@ -276,7 +328,6 @@ VickynghiBlackEvaluator::VickynghiBlackEvaluator() {
         }
         return result;
     };
-
 }
 
 

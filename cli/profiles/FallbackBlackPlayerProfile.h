@@ -6,13 +6,15 @@
 #define OSARRACINO_FALLBACKBLACKPLAYERPROFILE_H
 
 #include <evaluator/BlackEvaluator.h>
+#include <evaluator/VickynghiBlackEvaluator.h>
 #include <movegenerator/ArnoldMoveGenerator.h>
 #include <search/RamboSearchEngine.h>
 #include "ParametrizedPlayerProfile.h"
 
 class FallbackBlackPlayerProfile : public ParametrizedPlayerProfile<
         RamboSearchEngine,
-        BlackEvaluator,
+        //BlackEvaluator,
+        VickyBlackEvaluator,
         ArnoldMoveGenerator>{
 public:
     std::string get_profile_name() override {
