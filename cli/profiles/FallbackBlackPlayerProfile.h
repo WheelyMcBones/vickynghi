@@ -14,7 +14,7 @@
 class FallbackBlackPlayerProfile : public ParametrizedPlayerProfile<
         RamboSearchEngine,
         //BlackEvaluator,
-        VickyBlackEvaluator,
+        VickynghiBlackEvaluator,
         ArnoldMoveGenerator>{
 public:
     std::string get_profile_name() override {
