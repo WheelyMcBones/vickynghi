@@ -3,7 +3,8 @@
 //
 
 #include "Board.h"
-#include <json/json.h>
+// #include <json/json.h> MACOS
+#include <jsoncpp/json/json.h>
 #include <memory>
 #include <iostream>
 #include <algorithm>
