@@ -182,7 +182,7 @@ int VickynghiBlackEvaluator::get_empty_row_down(const Board &b) const {
 }
 
 // get empty row
-int VickynghiBlackEvaluator::get_number_empty_row(const Board &b) const{
+int VickynghiBlackEvaluator::get_number_empty_factor(const Board &b) const{
     int num_empty_row = 0;
     int num_empty_col = 0;
     int blocked_pawn = 0;
@@ -282,10 +282,11 @@ int VickynghiBlackEvaluator::is_in_corner(const Board &b) const {
     if(b.board[0][0] == Pawn::Black || b.board[0][8] == Pawn::Black || b.board[8][0] == Pawn::Black || b.board[8][8] == Pawn::Black){
         return 1;
     }
-
-int VickynghiBlackEvaluator::get_empty_col_left(const Board &b) const {
-    return 0;
 }
+
+// int VickynghiBlackEvaluator::get_empty_col_left(const Board &b) const {
+//     return 0;
+// }
 
 int VickynghiBlackEvaluator::black_superiority(const Board &b) const {
     if(b.black_count - b.white_count > 10){
@@ -317,7 +318,7 @@ int VickynghiBlackEvaluator::get_empty_col_left(const Board &b) const {
 
 
 VickynghiBlackEvaluator::VickynghiBlackEvaluator() {
-    geometry_calculator = [](const Board &b, const uint8_t (&matrix)[9][9]) ->int {
+    geometry_calculator = [](const Board &b, const int8_t (&matrix)[9][9]) ->int {
         int result {0};
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {

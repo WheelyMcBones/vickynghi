@@ -13,7 +13,7 @@
 class SimpleBlackPlayerProfile : public ParametrizedPlayerProfile<
         FSMSearchEngine,
         //BlackEvaluator,
-        VickyBlackEvaluator,
+        VickynghiBlackEvaluator,
         HeisenbergMoveGenerator>{
 public:
     std::string get_profile_name() override {
