@@ -216,8 +216,8 @@ public:
 
         auto best_state = results[0];
 
-        std::cout << "Best score: " << best_state.score << std::endl;
-        std::cout << "Reached depth: " << current_depth_limit-1 << std::endl;
+        // std::cout << "Best score: " << best_state.score << std::endl;
+        // std::cout << "Reached depth: " << current_depth_limit-1 << std::endl;
 
 
         return best_state.move;

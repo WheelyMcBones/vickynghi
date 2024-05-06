@@ -252,7 +252,7 @@ public:
         return count;
     }
 
-    void load_board(const std::string &json_board);
+    void load_board(const std::string &json_board, int turn_count);
 
     friend std::ostream& operator<<(std::ostream &s, const Board &board){
         std::string turn = (board.is_white) ? "WHITE" : "BLACK";

@@ -168,8 +168,8 @@ public:
             state.depth = current_depth_limit;
 
             if (value > 100000) {
-                std::cout << "Stopping evaluation with winning move: " << state.move << " at depth: "
-                          << current_depth_limit << std::endl;
+                // std::cout << "Stopping evaluation with winning move: " << state.move << " at depth: "
+                //           << current_depth_limit << std::endl;
                 early_exit = true;
                 break;
             }
@@ -251,7 +251,7 @@ public:
             int current_worker = 0;
             for (auto worker_exit : worker_early_exit) {
                 if (worker_exit) {
-                    std::cout << "Worker "<<current_worker<<" requested early exit" << std::endl;
+                    // std::cout << "Worker "<<current_worker<<" requested early exit" << std::endl;
                     force_exit = true;
                     break;
                 }
@@ -266,12 +266,12 @@ public:
 
             // Print per/thread statistics
             for (int i = 0; i<worker_count; ++i) {
-                std::cout << "Worker: " << i << " explored " << worker_move_counts[i] << " moves in "
-                          << worker_elapsed[i] << " seconds with score: " << results[i].score << std::endl;
+                // std::cout << "Worker: " << i << " explored " << worker_move_counts[i] << " moves in "
+                //           << worker_elapsed[i] << " seconds with score: " << results[i].score << std::endl;
             }
 
-            std::cout << "Searched depth: " << (current_depth_limit+1) << ". Explored a total of " << move_count << " moves in "
-                      << timer.elapsed() << " s" << std::endl;
+            // std::cout << "Searched depth: " << (current_depth_limit+1) << ". Explored a total of " << move_count << " moves in "
+            //           << timer.elapsed() << " s" << std::endl;
 
 
 
@@ -279,7 +279,7 @@ public:
         } while (current_depth_limit <= FSM_MAX_DEPTH && !force_exit && !timer.is_timed_out());
 
         if (timer.is_timed_out()) {
-            std::cout << "TIMED OUT" << std::endl;
+            // std::cout << "TIMED OUT" << std::endl;
         }
 
         std::sort(results.begin(), results.end(), [](const auto &s1, const auto &s2) {
@@ -288,8 +288,8 @@ public:
 
         auto best_state = results[0];
 
-        std::cout << "Best score: " << best_state.score << std::endl;
-        std::cout << "Reached depth: " << current_depth_limit-1 << std::endl;
+        // std::cout << "Best score: " << best_state.score << std::endl;
+        // std::cout << "Reached depth: " << current_depth_limit-1 << std::endl;
 
 
         return best_state.move;

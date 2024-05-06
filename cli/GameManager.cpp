@@ -64,8 +64,8 @@ void GameManager::game_loop() {
     bool end_game = true;
     while (end_game) {
         Board b;
-        b.load_board(connector.receive_string());
-        std::cout << b << std::endl;
+        b.load_board(connector.receive_string(), turn_count);
+        // std::cout << b << std::endl;
 
         if (player == Player::WHITE) {
             send_move(b);
@@ -75,8 +75,8 @@ void GameManager::game_loop() {
         }
 
         Board b2;
-        b2.load_board(connector.receive_string());
-        std::cout << b2 << std::endl;
+        b2.load_board(connector.receive_string(), turn_count);
+        // std::cout << b2 << std::endl;
 
         if (player == Player::BLACK) {
             send_move(b2);

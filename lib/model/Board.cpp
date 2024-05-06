@@ -3,8 +3,8 @@
 //
 
 #include "Board.h"
-// #include <json/json.h> MACOS
-#include <jsoncpp/json/json.h>
+#include <json/json.h>
+//#include <jsoncpp/json/json.h>
 #include <memory>
 #include <iostream>
 #include <algorithm>
@@ -14,10 +14,11 @@
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 // Input: Json String that represents the board
 // This method initializes all the data structures based on the json string.
-void Board::load_board(const std::string &json_board) {
+void Board::load_board(const std::string &json_board, int turn_count) {
     Json::Value root;
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
@@ -28,10 +29,10 @@ void Board::load_board(const std::string &json_board) {
     int y = 0;
     is_white = root["turn"] == "WHITE";
 
-    if (root["turn"] == "BLACKWIN" || root["turn"] == "WHITEWIN" || root["turn"] == "DRAW") {
-        std::cout << "The match has concluded.";
-        exit(0);
-    }
+    // if (root["turn"] == "BLACKWIN" || root["turn"] == "WHITEWIN" || root["turn"] == "DRAW") {
+    //     std::cout << "The match has concluded.";
+    //     exit(0);
+    // }
 
     for (auto &row : root["board"]) {
         int x = 0;
@@ -104,6 +105,14 @@ void Board::load_board(const std::string &json_board) {
         obstacle_rows[i] |= throne_mask[i];
     }
 
+    if (root["turn"] == "BLACKWIN" || root["turn"] == "WHITEWIN" || root["turn"] == "DRAW") {
+       std::cout << root["turn"].asString() +","+std::to_string(turn_count)+","+std::to_string(white_count)+","+std::to_string(black_count);
+        pid_t pid = 0;//getpid();
+        std::ofstream MyFile("/tmp/tablut/playerBlack"+std::to_string(pid));
+        MyFile <<  root["turn"].asString() +","+std::to_string(turn_count)+","+std::to_string(white_count)+","+std::to_string(black_count) << std::endl;
+        MyFile.close();
+        exit(0);
+    }
 }
 
 // This constructor initializes the board citadels, is needed because the server doesn't tell us which cells are citadels
@@ -310,7 +319,7 @@ Board Board::from_board(Board b, const Position &from, const Position &to) {
 
 Board Board::from_json(const std::string &json) {
     Board b;
-    b.load_board(json);
+    b.load_board(json, 0);
     return b;
 }
 
