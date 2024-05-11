@@ -22,7 +22,7 @@
 
 // Input: Json String that represents the board
 // This method initializes all the data structures based on the json string.
-void Board::load_board(const std::string &json_board, int turn_count) {
+void Board::load_board(const std::string &json_board, int turn_count, bool print_genetic_algo_stats) {
     Json::Value root;
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
@@ -32,11 +32,11 @@ void Board::load_board(const std::string &json_board, int turn_count) {
     //std::cout << root << std::endl;
     int y = 0;
     is_white = root["turn"] == "WHITE";
-
-    // if (root["turn"] == "BLACKWIN" || root["turn"] == "WHITEWIN" || root["turn"] == "DRAW") {
-    //     std::cout << "The match has concluded.";
-    //     exit(0);
-    // }
+    
+    if (!print_genetic_algo_stats && (root["turn"] == "BLACKWIN" || root["turn"] == "WHITEWIN" || root["turn"] == "DRAW")) {
+        std::cout << "The match has concluded.";
+        exit(0);
+    }
 
     for (auto &row : root["board"]) {
         int x = 0;
@@ -109,6 +109,7 @@ void Board::load_board(const std::string &json_board, int turn_count) {
         obstacle_rows[i] |= throne_mask[i];
     }
 
+    // save the info for the genetic algorithm and exit
     if (root["turn"] == "BLACKWIN" || root["turn"] == "WHITEWIN" || root["turn"] == "DRAW") {
        std::cout << root["turn"].asString() +","+std::to_string(turn_count)+","+std::to_string(white_count)+","+std::to_string(black_count);
         pid_t pid = 0;//getpid();
@@ -117,6 +118,10 @@ void Board::load_board(const std::string &json_board, int turn_count) {
         MyFile.close();
         exit(0);
     }
+}
+
+void Board::load_board(const std::string &json_board) {
+    load_board(json_board, 0, false);
 }
 
 // This constructor initializes the board citadels, is needed because the server doesn't tell us which cells are citadels
@@ -323,7 +328,7 @@ Board Board::from_board(Board b, const Position &from, const Position &to) {
 
 Board Board::from_json(const std::string &json) {
     Board b;
-    b.load_board(json, 0);
+    b.load_board(json, 0, false);
     return b;
 }
 

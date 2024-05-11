@@ -252,7 +252,8 @@ public:
         return count;
     }
 
-    void load_board(const std::string &json_board, int turn_count);
+    void load_board(const std::string &json_board, int turn_count, bool print_genetic_algo_stats);
+    void load_board(const std::string &json_board);
 
     friend std::ostream& operator<<(std::ostream &s, const Board &board){
         std::string turn = (board.is_white) ? "WHITE" : "BLACK";

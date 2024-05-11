@@ -8,6 +8,9 @@
 #include <unistd.h>
 #include "GameManager.h"
 
+// the check is based on its definition, not the value!
+#define GENETIC_ALGO 0
+
 GameManager::GameManager(Connector &connector, PlayerProfile *defensive, PlayerProfile *aggressive, Player player, ConfigSet config)
         : connector(connector), defensive_profile(defensive), aggressive_profile(aggressive), player(player), config(config) {
 }
@@ -64,7 +67,12 @@ void GameManager::game_loop() {
     bool end_game = true;
     while (end_game) {
         Board b;
-        b.load_board(connector.receive_string(), turn_count);
+        #ifdef GENETIC_ALGO
+            b.load_board(connector.receive_string(), turn_count, true);
+        #else
+            b.load_board(connector.receive_string());
+        #endif
+
         // std::cout << b << std::endl;
 
         if (player == Player::WHITE) {
@@ -75,7 +83,11 @@ void GameManager::game_loop() {
         }
 
         Board b2;
-        b2.load_board(connector.receive_string(), turn_count);
+        #ifdef GENETIC_ALGO
+            b2.load_board(connector.receive_string(), turn_count, true);
+        #else
+            b2.load_board(connector.receive_string());
+        #endif
         // std::cout << b2 << std::endl;
 
         if (player == Player::BLACK) {
