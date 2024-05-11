@@ -12,6 +12,6 @@ add_executable(osarracino_tests_run MainTestAll.cpp
         ZobristHashTest.cpp)
 
 target_link_libraries(osarracino_tests_run libosarracino)
-target_link_libraries(osarracino_tests_run ${GTEST_LIBRARIES} pthread)
+target_link_libraries(osarracino_tests_run ${GTEST_LIBRARIES} gtest pthread)
 
 file(COPY boards DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

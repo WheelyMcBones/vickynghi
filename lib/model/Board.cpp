@@ -3,8 +3,12 @@
 //
 
 #include "Board.h"
+#ifdef __APPLE__
 #include <json/json.h>
-//#include <jsoncpp/json/json.h>
+#else
+#include <jsoncpp/json/json.h>
+#endif
+
 #include <memory>
 #include <iostream>
 #include <algorithm>
