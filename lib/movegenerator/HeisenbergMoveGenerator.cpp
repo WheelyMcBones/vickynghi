@@ -110,7 +110,7 @@ std::vector<Move> HeisenbergMoveGenerator::generate(const Board &b) const {
     current_moves.reserve(30);
 
     for (auto &pawn : to_be_moved) {
-        uint16_t target_col = b.obstacle_cols[pawn.col];
+        uint16_t target_col = b.obstacle_cols[pawn.col]; // target === pawn being moved/analyzed
         uint16_t target_row = b.obstacle_rows[pawn.row];
 
         // Check if it's a black pawn inside a citadel
@@ -128,13 +128,15 @@ std::vector<Move> HeisenbergMoveGenerator::generate(const Board &b) const {
         current_moves.insert(current_moves.end(), vertical_moves.begin(), vertical_moves.end());
     }
 
-    if (!b.is_white) { // SORT BY KING DISTANCE
-        //BLACK
+    // SORT BY MANHATTAN KING DISTANCE
+    // comparator: which returns ​true if the first argument is less than (i.e. is ordered before) the second. 
+    if (!b.is_white) {
+        // BLACK - explore the moves that come closest to the king first
         std::sort(current_moves.begin(), current_moves.end(), [&b](const auto &item1, const auto &item2) {
             return abs(b.king_pos.col - item1.to.col) + abs(b.king_pos.row - item1.to.row) <
                    abs(b.king_pos.col - item2.to.col) + abs(b.king_pos.row - item2.to.row);
         });
-    } else { // WHITE
+    } else { // WHITE - explore the moves that start closest to the king first
         std::sort(current_moves.begin(), current_moves.end(), [&b](const auto &item1, const auto &item2)-> bool {
             return abs(b.king_pos.col - item1.from.col) + abs(b.king_pos.row - item1.from.row) <
                    abs(b.king_pos.col - item2.from.col) + abs(b.king_pos.row - item2.from.row);

@@ -35,6 +35,8 @@ namespace BitUtils {
     inline int get_high_moves(uint16_t row, int index) {
         uint16_t select_high = row & high_mask[index];
         if (select_high != 0) {
+            //__builtin_ffs : Returns one plus the index of
+            // the least significant 1-bit of x, or if x is zero, returns zero. 
             return (__builtin_ffs(select_high) - index - 2);
         }else{
             return 8 - index;
@@ -44,6 +46,8 @@ namespace BitUtils {
     inline int get_low_moves(uint16_t row, int index) {
         uint16_t select_low = row & low_mask[index];
         if (select_low != 0) {
+            //__builtin_clz : Returns the number of leading 0-bits in x, starting
+            // at the most significant bit position. If x is 0, the result is undefined. 
             return (__builtin_clz(select_low) - 32 + index);
         }else{
             return index;
@@ -62,6 +66,9 @@ namespace BitUtils {
         }
     }
 
+    /*
+     *  It counts the number of 1’s in the binary form of a positive integer.
+     */
     inline int popcount(uint16_t row) {
         return __builtin_popcount(row);
     }

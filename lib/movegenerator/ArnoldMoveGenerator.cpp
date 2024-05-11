@@ -33,8 +33,11 @@ const uint16_t citadel_masks[9] = {
 
 std::vector<Move> ArnoldMoveGenerator::generate(const Board &b) const {
     // Convert the board matrix to an array of columns and rows
-    uint16_t obstacle_cols[9] = {56, 16, 0, 257, 403, 257, 0, 16, 56};
-    uint16_t obstacle_rows[9] = {56, 16, 0, 257, 403, 257, 0, 16, 56};
+
+    //                                        110010011
+    //                                            v
+    uint16_t obstacle_cols[9] = {56, 16, 0, 257, 403, 257, 0, 16, 56}; // accampamenti e trono
+    uint16_t obstacle_rows[9] = {56, 16, 0, 257, 403, 257, 0, 16, 56}; // accampamenti e trono
 
     uint16_t cols[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     uint16_t rows[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
