@@ -8,6 +8,7 @@
 #include "SearchEngine.h"
 #include <algorithm>
 #include <thread>
+#include "../evaluator/VickynghiWhiteEvaluator.h"
 
 const int FSM_MAX_DEPTH = 10;
 const int FSM_QUIESCENCE_MAX_DEPTH = 2;
@@ -290,6 +291,10 @@ public:
 
         // std::cout << "Best score: " << best_state.score << std::endl;
         // std::cout << "Reached depth: " << current_depth_limit-1 << std::endl;
+
+        // Print white direction 
+        // auto best_board{Board::from_board(b, best_state.move.from, best_state.move.to)};
+        // int score = ((VickynghiWhiteEvaluator&)eval).evaluate(best_board, true);
 
 
         return best_state.move;

@@ -6,15 +6,16 @@
 #define OSARRACINO_SIMPLEBLACKPLAYERPROFILE_H
 
 #include <evaluator/VickynghiBlackEvaluatorTraining.h>
+#include <evaluator/BlackEvaluator.h>
 #include <movegenerator/HeisenbergMoveGenerator.h>
 #include <search/FSMSearchEngine.h>
 #include "ParametrizedPlayerProfile.h"
 
 class SimpleBlackPlayerProfile : public ParametrizedPlayerProfile<
         FSMSearchEngine,
-        //BlackEvaluator,
+        BlackEvaluator,
         //VickynghiBlackEvaluator,
-        VickynghiBlackEvaluatorTraining,
+        //VickynghiBlackEvaluatorTraining,
         HeisenbergMoveGenerator>{
 public:
     std::string get_profile_name() override {

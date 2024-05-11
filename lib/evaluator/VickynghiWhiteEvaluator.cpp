@@ -85,6 +85,34 @@ int VickynghiWhiteEvaluator::evaluate(const Board &b) const {
     return score;
 }
 
+int VickynghiWhiteEvaluator::evaluate(const Board &b, bool print) const {
+    int quad = attacking_quadrant(b);
+    std::vector<int> blocked_diagonals = formed_black_diagonals_for_quadrant(b);
+    std::cout << "[value] alto dx " + std::to_string(blocked_diagonals[0]) << std::endl;
+    std::cout << "[value] alto sx " + std::to_string(blocked_diagonals[1]) << std::endl;
+    std::cout << "[value] basso dx " + std::to_string(blocked_diagonals[2]) << std::endl;
+    std::cout << "[value] basso sx " + std::to_string(blocked_diagonals[3]) << std::endl;
+
+    switch(quad){
+        case 0:
+            std::cout << "[info] alto dx" << std::endl;
+            break;
+        case 1:
+            std::cout << "[info] alto sx" << std::endl;
+            break;
+        case 2:
+            std::cout << "[info] basso dx" << std::endl;
+            break;
+        case 3:
+            std::cout << "[info] basso sx" << std::endl;
+            break;
+        default:
+            std::cout << "[info] no choice" << std::endl;
+            break;
+    }
+    return evaluate(b);
+}
+
 int
 VickynghiWhiteEvaluator::perform_search(const uint16_t *cols, const uint16_t *rows, int depth, int king_col, int king_row,
                                       bool horizontal) const {
@@ -134,7 +162,7 @@ VickynghiWhiteEvaluator::perform_search(const uint16_t *cols, const uint16_t *ro
     return std::max(low_score, high_score);
 }
 
-int VickynghiBlackEvaluator::geometry_points(const Board &b) const {
+int VickynghiWhiteEvaluator::geometry_points(const Board &b) const {
 
     // TODO: fare un'unica mappa per ogni sezione
     int quadrant = attacking_quadrant(b);
@@ -200,12 +228,36 @@ int VickynghiWhiteEvaluator::attacking_quadrant(const Board &b) const {
     std::vector<int> vect_result = std::vector<int>(4,0);
     std::vector<int> diagonals = diagonals_attacking_quadrant(b);
     std::vector<int> blacks = num_blacks_for_quadrant(b);
-    std::vector<int> free_escapes = num_free_escapes_for_quadrant(b);
-    vect_result[0] = diagonals[0] - (4 - free_escapes[0]) + (16 - blacks[0]);
-    vect_result[1] = diagonals[1] - (4 - free_escapes[1]) + (16 - blacks[1]);
-    vect_result[0] = diagonals[2] - (4 - free_escapes[2]) + (16 - blacks[2]);
-    vect_result[0] = diagonals[3] - (4 - free_escapes[3]) + (16 - blacks[3]);
+    std::vector<int> free_escapes = num_free_escapes_for_quadrant(b, black_high_risk_mask);
+    std::vector<int> blocked_diagonals = formed_black_diagonals_for_quadrant(b);
+    vect_result[0] = diagonals[0] - (4 - free_escapes[0]) + (16 - blacks[0]) + (blocked_diagonals[0] * PENALTY);
+    vect_result[1] = diagonals[1] - (4 - free_escapes[1]) + (16 - blacks[1]) + (blocked_diagonals[1] * PENALTY);;
+    vect_result[2] = diagonals[2] - (4 - free_escapes[2]) + (16 - blacks[2]) + (blocked_diagonals[2] * PENALTY);;
+    vect_result[3] = diagonals[3] - (4 - free_escapes[3]) + (16 - blacks[3]) + (blocked_diagonals[3] * PENALTY);;
     return std::max_element(vect_result.begin(), vect_result.end()) - vect_result.begin();
+}
+
+std::vector<int> VickynghiWhiteEvaluator::formed_black_diagonals_for_quadrant(const Board &b) const {
+
+    std::vector<int> result = std::vector<int>(4,0);
+
+    if((b.has_black(5,2) && b.has_black(6,3)) || (b.has_black(5,1) && b.has_black(6,2) && b.has_black(7,3)) || (b.has_black(6,1) && (b.has_black(7,2)))){
+        result[0]++;
+    }
+
+    if((b.has_black(3,2) && b.has_black(2,3)) || (b.has_black(3,1) && b.has_black(2,2) && b.has_black(1,3)) || (b.has_black(2,1) && (b.has_black(1,2)))){
+        result[1]++;
+    }
+
+    if((b.has_black(5,6) && b.has_black(6,5)) || (b.has_black(5,7) && b.has_black(6,6) && b.has_black(7,5)) || (b.has_black(6,7) && (b.has_black(7,6)))){
+        result[2]++;
+    }
+
+    if((b.has_black(3,6) && b.has_black(2,5)) || (b.has_black(3,7) && b.has_black(2,6) && b.has_black(1,5)) || (b.has_black(2,7) && (b.has_black(1,6)))){
+        result[3]++;
+    }
+
+    return result;
 }
 
 int VickynghiWhiteEvaluator::calculate_surrounded_penality(const uint16_t *cols, const uint16_t *rows, int king_col,

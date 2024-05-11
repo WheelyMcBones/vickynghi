@@ -51,4 +51,5 @@ osarracino_tests_run
 
 # Ingnore everything but genetic_algo.cpp
 galgo/**
-!galgo/genetic_algo.cpp
+!galgo/genetic_algo_black.cpp
+!galgo/genetic_algo_white.cpp

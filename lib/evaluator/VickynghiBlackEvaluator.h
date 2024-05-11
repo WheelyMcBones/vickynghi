@@ -40,16 +40,31 @@ public:
     std::vector<Direction> get_direction_of_move_check(const Board &b)const;
     std::function<int(const Board &b, const int8_t (&matrix)[9][9])> geometry_calculator;
 
+//     HUMAN 
+//     static const uint8_t BLANK_WG = 0;
+//     static const uint8_t BLANK_HW = 10; // Hot area
+//     static const uint8_t BLANK_MW = 5; // Mild area
+//     static const int8_t BLANK_CW = -1; // Cold area
+//     static const int8_t PENALTY_FACTOR = -7;
+//     static const uint8_t CYAN_WG = 1;
+//     static const uint8_t PURPLE_WG = 0;
+//     static const uint8_t YELLOW_WG = 1;
+//     static const int STRONG_MULT = 40;
+//     static const int LIGHT_MULT = 20;
+//     static const int EZPZ = 200000;
+//     static const int PREVENT_CHECKMATE = -1000;
+
+//     GALGO 
     static const uint8_t BLANK_WG = 0;
-    static const uint8_t BLANK_HW = 10; // Hot area
-    static const uint8_t BLANK_MW = 5; // Mild area
-    static const int8_t BLANK_CW = -1; // Cold area
-    static const int8_t PENALTY_FACTOR = -5;
+    static const uint8_t BLANK_HW = 2; // Hot area
+    static const uint8_t BLANK_MW = 11; // Mild area
+    static const int8_t BLANK_CW = -8; // Cold area
+    static const int8_t PENALTY_FACTOR = -20;
     static const uint8_t CYAN_WG = 1;
     static const uint8_t PURPLE_WG = 0;
     static const uint8_t YELLOW_WG = 1;
-    static const int STRONG_MULT = 40;
-    static const int LIGHT_MULT = 20;
+    static const int STRONG_MULT = 49;
+    static const int LIGHT_MULT = 1;
     static const int EZPZ = 200000;
     static const int PREVENT_CHECKMATE = -1000;
 

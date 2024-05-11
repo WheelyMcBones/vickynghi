@@ -36,7 +36,6 @@ public:
 
       system("/home/kali/Desktop/C++/vickynghi/cli/osarracino BLACK -t 10 -j 5 > result.txt");
 
-
       string mytext;
       char * temp;
       int turn_count = 1;

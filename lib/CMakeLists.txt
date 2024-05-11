@@ -33,13 +33,7 @@ add_library(libosarracino STATIC
         search/ThanosSearchEngine.h
         search/FSMSearchEngine.h)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-if(APPLE)
-        add_compile_options("-I/usr/local/Cellar/jsoncpp/1.9.5/include")
-        add_compile_options("-L/usr/local/Cellar/jsoncpp/1.9.5/lib")
-        add_compile_options("-ljsoncpp")
-endif()
-
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -I/usr/local/Cellar/jsoncpp/1.9.5/include -L/usr/local/Cellar/jsoncpp/1.9.5/lib -ljsoncpp")
 
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
