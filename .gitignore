@@ -39,3 +39,16 @@ cmake-build-*/
 .vscode/*
 build/*
 
+Makefile
+osarracino_tests_run
+
+# CMake
+# A leading "**" followed by a slash means match in all directories.
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/CMakeFiles/**
+
+
+# Ingnore everything but genetic_algo.cpp
+galgo/**
+!galgo/genetic_algo.cpp
