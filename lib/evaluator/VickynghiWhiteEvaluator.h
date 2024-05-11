@@ -65,7 +65,7 @@ public:
             {BWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  PWG,  BWG,  PWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  PWG,  BWG,  PWG,  BWG,  PWG,  BWG,  BWG},
-            {BWG, BWG,  BWG,  PWG,  RE,  PWG,  BWG,  BWG,  BWG},
+            {BWG, BWG,  BWG,  PWG,  BWG,  PWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  PWG,  BWG,  PWG,  BWG,  PWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  PWG,  BWG,  PWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG},
@@ -77,7 +77,7 @@ public:
             {BWG, BWG,  BWG,  BWG,  BWG,  MWG,  BWG,  BWG,  GWG},
             {BWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  MWG},
             {BWG, BWG,  PWG,  BWG,  BWG,  BWG,  BWG,  MWG,  BWG},
-            {BWG, BWG,  BWG,  PWG,  RE,  BWG,  BWG,  BWG,  BWG},
+            {BWG, BWG,  BWG,  PWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  PWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  BWG,  PWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG},
@@ -89,7 +89,7 @@ public:
             {GWG, BWG,  BWG,  MWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {MWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, MWG,  BWG,  BWG,  BWG,  BWG,  PWG,  BWG,  BWG},
-            {BWG, BWG,  BWG,  BWG,  RE,  PWG,  BWG,  BWG,  BWG},
+            {BWG, BWG,  BWG,  BWG,  BWG,  PWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  PWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  PWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG},
@@ -101,7 +101,7 @@ public:
             {BWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  BWG,  PWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  PWG,  BWG,  BWG,  BWG,  BWG},
-            {BWG, BWG,  BWG,  PWG,  RE,  BWG,  BWG,  BWG,  BWG},
+            {BWG, BWG,  BWG,  PWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  PWG,  BWG,  BWG,  BWG,  BWG,  MWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  MWG},
             {BWG, BWG,  BWG,  BWG,  BWG,  MWG,  BWG,  BWG,  GWG},
@@ -113,7 +113,7 @@ public:
             {BWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  PWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {BWG, BWG,  BWG,  BWG,  PWG,  BWG,  BWG,  BWG,  BWG},
-            {BWG, BWG,  BWG,  BWG,  RE,  PWG,  BWG,  BWG,  BWG},
+            {BWG, BWG,  BWG,  BWG,  BWG,  PWG,  BWG,  BWG,  BWG},
             {BWG, MWG,  BWG,  BWG,  BWG,  BWG,  PWG,  BWG,  BWG},
             {MWG, BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG,  BWG},
             {GWG, BWG,  BWG,  MWG,  BWG,  BWG,  BWG,  BWG,  BWG},
@@ -127,4 +127,4 @@ public:
 
 
 
-#endif //OSARRACINO_VickynghiWhiteEvaluator_H
+#endif //OSARRACINO_VICKYNGHIWHITEEVALUATOR_H

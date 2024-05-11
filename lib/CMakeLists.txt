@@ -4,25 +4,34 @@ link_libraries(${JSONCPP_LIBRARIES} pthread)
 
 
 add_library(libosarracino STATIC
-        model/Board.cpp model/Board.h
+        util/BitUtils.h util/BoardUtils.cpp util/BoardUtils.h
         network/Connector.cpp network/Connector.h
-        evaluator/Evaluator.h
+
+        model/Board.cpp model/Board.h
         model/Position.cpp model/Position.h
+        model/DTranspositionTable.cpp model/DTranspositionTable.h
+        model/ZobristHash.cpp model/ZobristHash.h
+
+        evaluator/Evaluator.h
+
         evaluator/TorettoWhiteEvaluator.cpp evaluator/TorettoWhiteEvaluator.h
+        evaluator/TheRockWhiteEvaluator.cpp evaluator/TheRockWhiteEvaluator.h
+        evaluator/VickynghiWhiteEvaluator.cpp evaluator/VickynghiWhiteEvaluator.h
+
         evaluator/BlackEvaluator.cpp evaluator/BlackEvaluator.h
+        evaluator/ReverseTorettoBlackEvaluator.cpp evaluator/ReverseTorettoBlackEvaluator.h
         evaluator/VickynghiBlackEvaluator.cpp evaluator/VickynghiBlackEvaluator.h
+        evaluator/VickynghiBlackEvaluatorTraining.cpp evaluator/VickynghiBlackEvaluatorTraining.h
+
         movegenerator/MoveGenerator.h
         movegenerator/ThetaMoveGenerator.cpp movegenerator/ThetaMoveGenerator.h
-        util/BitUtils.h util/BoardUtils.cpp util/BoardUtils.h
         movegenerator/ArnoldMoveGenerator.cpp movegenerator/ArnoldMoveGenerator.h
-        search/SearchEngine.h search/RamboSearchEngine.h util/Timer.h
         movegenerator/HeisenbergMoveGenerator.cpp movegenerator/HeisenbergMoveGenerator.h
-        evaluator/ReverseTorettoBlackEvaluator.cpp evaluator/ReverseTorettoBlackEvaluator.h
-        model/ZobristHash.cpp model/ZobristHash.h
-        model/DTranspositionTable.cpp model/DTranspositionTable.h
+
+        search/SearchEngine.h search/RamboSearchEngine.h util/Timer.h
         search/CollisionSearchEngine.h search/CarloSearchEngine.h
         search/ThanosSearchEngine.h
-        search/FSMSearchEngine.h evaluator/TheRockWhiteEvaluator.cpp evaluator/TheRockWhiteEvaluator.h)
+        search/FSMSearchEngine.h)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 if(APPLE)
