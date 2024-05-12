@@ -70,8 +70,9 @@ public:
     static const int STRONG_MULT = 49;
     static const int LIGHT_MULT = 1;
     static const int EZPZ = 200000;
-    static const int PREVENT_CHECKMATE = -1000;
-    static const int PENALTY_NO_TRANSIT_ZONE = -1000;
+    static const int PREVENT_CHECKMATE = -EZPZ;
+
+    static const int PENALTY_NO_TRANSIT_ZONE = -25;
 
 
     int8_t color_matrix[9][9] = {
