@@ -13,9 +13,11 @@
 #include <functional>
 
 
-class VickynghiBlackEvaluator : public Evaluator<VickynghiBlackEvaluator>{
-private: 
-    enum Direction {Up=1, Down=2, Right=3, Left=4, None=false};
+class VickynghiBlackEvaluator : public Evaluator<VickynghiBlackEvaluator> {
+private:
+    enum Direction {
+        Up = 1, Down = 2, Right = 3, Left = 4, None = false
+    };
     const std::array<int, 4> win_rows_cols = {1, 2, 6, 7};
 
 public:
@@ -37,8 +39,10 @@ public:
     int avoid_same_row_or_col(const Board &b) const;
     int is_in_corner(const Board &b) const;
     int black_superiority(const Board &b) const;
-    std::vector<Direction> get_direction_of_move_check(const Board &b)const;
+    std::vector <Direction> get_direction_of_move_check(const Board &b) const;
     std::function<int(const Board &b, const int8_t (&matrix)[9][9])> geometry_calculator;
+    int apply_no_transit_zone(const Board &b) const;
+    std::vector<int> no_transit_zone(const Board &b) const;
 
 //     HUMAN 
 //     static const uint8_t BLANK_WG = 0;
@@ -67,6 +71,7 @@ public:
     static const int LIGHT_MULT = 1;
     static const int EZPZ = 200000;
     static const int PREVENT_CHECKMATE = -1000;
+    static const int PENALTY_NO_TRANSIT_ZONE = -1000;
 
 
     int8_t color_matrix[9][9] = {
@@ -282,17 +287,171 @@ public:
         };
 
     int8_t bottom_larger_diagonal_color_matrix[9][9] = {
-        {BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW, BLANK_CW},
-        {BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW,},
-        {BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW },
-        {BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG},
-        {BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW},
-        {BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT},
-        {BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW},
-        {BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW},
-        {BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW, BLANK_MW},
-        };
+            {BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW, BLANK_CW},
+            {BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW,},
+            {BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG, BLANK_CW },
+            {BLANK_CW+YELLOW_WG, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW+YELLOW_WG},
+            {BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW, BLANK_CW},
+            {BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT},
+            {BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW},
+            {BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW},
+            {BLANK_MW, BLANK_MW, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW+YELLOW_WG*LIGHT_MULT, BLANK_MW, BLANK_MW, BLANK_MW},
+    };
 
+
+    int8_t top_right_transit_red_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 0
+            {0, 0, 0, 0, 0, 1, 1, 1, 1}, // 1
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 1, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 6
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 7
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 8
+    };
+    int8_t top_right_transit_orange_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 0
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 1
+            {0, 0, 0, 0, 0, 0, 0, 1, 1}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 6
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 7
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 8
+    };
+    int8_t top_right_transit_yellow_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 0
+            {0, 0, 0, 0, 0, 0, 0, 1, 1}, // 1
+            {0, 0, 0, 0, 0, 0, 0, 0, 1}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 6
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 7
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 8
+    };
+
+
+    int8_t top_left_transit_red_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 0
+            {1, 1, 1, 1, 0, 0, 0, 0, 0}, // 1
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 1, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 6
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 7
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 8
+    };
+
+    int8_t top_left_transit_orange_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 0
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 1
+            {1, 1, 0, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 6
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 7
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 8
+    };
+    int8_t top_left_transit_yellow_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 0
+            {1, 1, 0, 0, 0, 0, 0, 0, 0}, // 1
+            {1, 0, 0, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 6
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 7
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 8
+    };
+
+    int8_t bottom_right_transit_red_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 0
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 1
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 1, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 6
+            {0, 0, 0, 0, 0, 1, 1, 1, 1}, // 7
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 8
+    };
+
+    int8_t bottom_right_transit_orange_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 0
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 1
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 0, 1, 1}, // 6
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 7
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 8
+    };
+    int8_t bottom_right_transit_yellow_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 0
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 1
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {0, 0, 0, 0, 0, 0, 0, 0, 1}, // 6
+            {0, 0, 0, 0, 0, 0, 0, 1, 1}, // 7
+            {0, 0, 0, 0, 0, 0, 1, 1, 1}, // 8
+    };
+
+
+    int8_t bottom_left_transit_red_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 0
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 1
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 1, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 6
+            {1, 1, 1, 1, 0, 0, 0, 0, 0}, // 7
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 8
+    };
+
+    int8_t bottom_left_transit_orange_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 0
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 1
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {1, 1, 0, 0, 0, 0, 0, 0, 0}, // 6
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 7
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 8
+    };
+    int8_t bottom_left_transit_yellow_matrix[9][9] = {
+//       0  1  2  3  4  5  6  7  8
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 0
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 1
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 2
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 3
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 4
+            {0, 0, 0, 0, 0, 0, 0, 0, 0}, // 5
+            {1, 0, 0, 0, 0, 0, 0, 0, 0}, // 6
+            {1, 1, 0, 0, 0, 0, 0, 0, 0}, // 7
+            {1, 1, 1, 0, 0, 0, 0, 0, 0}, // 8
+
+    };
 };
 
 

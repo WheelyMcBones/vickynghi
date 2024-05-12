@@ -45,6 +45,104 @@ int VickynghiBlackEvaluator::pawn_differences(const Board &b) const {
     return b.black_count - b.white_count - 1;
 }
 
+std::vector<int> VickynghiBlackEvaluator::no_transit_zone(const Board &b) const {
+    std::vector<int> result = std::vector<int>(4, 0);
+
+    // TOP RIGHT
+    // king red zone
+    if((b.king_pos.row < 2 && b.king_pos.col > 5) || (b.king_pos.row < 3 && b.king_pos.col > 6)) {
+        // if the king is in the red zone but not in the yellow one --> the king is in the orange diagonal
+        if (!((b.king_pos.row < 1 && b.king_pos.col > 6) || (b.king_pos.row < 2 && b.king_pos.col > 7))) {
+            // check if yellow diagonal is formed
+            if (b.has_black(6, 1) && b.has_black(7, 2)) {
+                result[0] = 3;
+            }
+        }
+    }else{
+        // check if the red diagonal is formed
+        if(b.has_black(5,2) && b.has_black(6,3)){
+            result[0] = 1;
+        // check if the orange diagonal is formed
+        }else if(b.has_black(5,1) && b.has_black(6,2) && b.has_black(7,3)){
+            result[0] = 2;
+        // check if the yellow diagonal is formed
+        }else if(b.has_black(6,1) && b.has_black(7,2)){
+            result[0] = 3;
+        }
+    }
+
+    // TOP LEFT
+    // king red zone
+    if((b.king_pos.row < 2 && b.king_pos.col < 3) || (b.king_pos.row < 3 && b.king_pos.col < 2)){
+        // if the king is in the red zone but not in the yellow one --> the king is in the orange diagonal
+        if(!((b.king_pos.row < 2 && b.king_pos.col < 1) || (b.king_pos.row < 1 && b.king_pos.col < 2))) {
+            // check if yellow diagonal is formed
+            if (b.has_black(1, 2) && b.has_black(2, 1)) {
+                result[1] = 3;
+            }
+        }
+    }else{
+        // check if the red diagonal is formed
+        if(b.has_black(2,3) && b.has_black(3,2)){
+            result[1] = 1;
+            // check if the orange diagonal is formed
+        }else if(b.has_black(1,3) && b.has_black(2,2) && b.has_black(3,1)){
+            result[1] = 2;
+            // check if the yellow diagonal is formed
+        }else if(b.has_black(1,2) && b.has_black(2,1)){
+            result[1] = 3;
+        }
+    }
+
+    // BOTTOM RIGHT
+    // king red zone
+    if((b.king_pos.row > 6 && b.king_pos.col > 5) || (b.king_pos.row > 5 && b.king_pos.col > 6)){
+        // if the king is in the red zone but not in the yellow one --> the king is in the orange diagonal
+        if(!((b.king_pos.row > 7 && b.king_pos.col > 6) || (b.king_pos.row > 6 && b.king_pos.col > 7))) {
+            // check if yellow diagonal is formed
+            if (b.has_black(6, 7) && b.has_black(7, 6)) {
+                result[2] = 3;
+            }
+        }
+    }else{
+        // check if the red diagonal is formed
+        if(b.has_black(6,5) && b.has_black(5,6)){
+            result[2] = 1;
+            // check if the orange diagonal is formed
+        }else if(b.has_black(5,7) && b.has_black(6,6) && b.has_black(7,5)){
+            result[2] = 2;
+            // check if the yellow diagonal is formed
+        }else if(b.has_black(6,7) && b.has_black(7,6)){
+            result[2] = 3;
+        }
+    }
+
+    // BOTTOM LEFT
+    // king red zone
+    if((b.king_pos.row > 5 && b.king_pos.col < 2) || (b.king_pos.row > 6 && b.king_pos.col < 3)){
+        // if the king is in the red zone but not in the yellow one --> the king is in the orange diagonal
+        if(!((b.king_pos.row > 6 && b.king_pos.col < 1) || (b.king_pos.row > 7 && b.king_pos.col < 2))) {
+            // check if yellow diagonal is formed
+            if (b.has_black(1, 6) && b.has_black(2, 7)) {
+                result[3] = 3;
+            }
+        }
+    }else{
+        // check if the red diagonal is formed
+        if(b.has_black(2,5) && b.has_black(3,6)){
+            result[3] = 1;
+            // check if the orange diagonal is formed
+        }else if(b.has_black(1,5) && b.has_black(2,6) && b.has_black(3,7)){
+            result[3] = 2;
+            // check if the yellow diagonal is formed
+        }else if(b.has_black(1,6) && b.has_black(2,7)){
+            result[3] = 3;
+        }
+    }
+    return result;
+}
+
+
 
 std::vector<VickynghiBlackEvaluator::Direction> VickynghiBlackEvaluator::get_direction_of_move_check(const Board &b) const {
 
@@ -111,6 +209,7 @@ int VickynghiBlackEvaluator::evaluate(const Board &b) const {
                10 * pawn_differences(b) +
                4 * black_superiority(b) +
                geometry+
+               apply_no_transit_zone(b) +
                get_number_empty_factor(b)+
                //PENALTY_FACTOR * get_number_empty_row(b) +
                PENALTY_FACTOR * is_in_corner(b) +
@@ -122,6 +221,72 @@ int VickynghiBlackEvaluator::evaluate(const Board &b) const {
     }
 
 }
+
+int VickynghiBlackEvaluator::apply_no_transit_zone(const Board &b) const {
+
+    std::vector<int> transit_zone = no_transit_zone(b);
+
+    // TOP RIGHT
+    if(transit_zone[0] == 1){ // RED
+        if(geometry_calculator(b, top_right_transit_red_matrix) != 0){
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }else if(transit_zone[0] == 2){ // ORANGE
+        if(geometry_calculator(b, top_right_transit_orange_matrix) != 0) {
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }else if(transit_zone[0] == 3){ // YELLOW
+        if(geometry_calculator(b, top_right_transit_yellow_matrix) != 0){
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }
+
+    // TOP LEFT
+    if(transit_zone[1] == 1){ // RED
+        if(geometry_calculator(b, top_left_transit_red_matrix) != 0){
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }else if(transit_zone[1] == 2){ // ORANGE
+        if(geometry_calculator(b, top_left_transit_orange_matrix) != 0) {
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }else if(transit_zone[1] == 3){ // YELLOW
+        if(geometry_calculator(b, top_left_transit_yellow_matrix) != 0){
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }
+
+    // BOTTOM RIGHT
+    if(transit_zone[2] == 1){ // RED
+        if(geometry_calculator(b, bottom_right_transit_red_matrix) != 0){
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }else if(transit_zone[2] == 2){ // ORANGE
+        if(geometry_calculator(b, bottom_right_transit_orange_matrix) != 0) {
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }else if(transit_zone[2] == 3){ // YELLOW
+        if(geometry_calculator(b, bottom_right_transit_yellow_matrix) != 0){
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }
+
+    // BOTTOM LEFT
+    if(transit_zone[3] == 1){ // RED
+        if(geometry_calculator(b, bottom_left_transit_red_matrix) != 0){
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }else if(transit_zone[3] == 2){ // ORANGE
+        if(geometry_calculator(b, bottom_left_transit_orange_matrix) != 0) {
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }else if(transit_zone[3] == 3){ // YELLOW
+        if(geometry_calculator(b, bottom_left_transit_yellow_matrix) != 0){
+            return PENALTY_NO_TRANSIT_ZONE;
+        }
+    }
+}
+
 
 int VickynghiBlackEvaluator::geometry_points(const Board &b) const {
 
@@ -278,9 +443,25 @@ int VickynghiBlackEvaluator::get_empty_col_right(const Board &b) const {
     return 1;
 }
 
+//int VickynghiBlackEvaluator::is_in_corner(const Board &b) const {
+//    if(b.board[0][0] == Pawn::Black || b.board[0][8] == Pawn::Black || b.board[8][0] == Pawn::Black || b.board[8][8] == Pawn::Black){
+//        return 1;
+//    }
+//}
+
 int VickynghiBlackEvaluator::is_in_corner(const Board &b) const {
-    if(b.board[0][0] == Pawn::Black || b.board[0][8] == Pawn::Black || b.board[8][0] == Pawn::Black || b.board[8][8] == Pawn::Black){
-        return 1;
+    if ((b.king_pos.row < 4 && b.king_pos.col < 4) ||
+        (b.king_pos.row > 4 && b.king_pos.col > 4)) { //TOP LEFT & BOTTOM RIGHT
+        if (b.board[0][8] == Pawn::Black || b.board[8][0] == Pawn::Black) {
+            return 1;
+        }
+    } else if ((b.king_pos.row < 4 && b.king_pos.col > 4) ||
+               (b.king_pos.row > 4 && b.king_pos.col < 4)) { //TOP RIGHT & BOTTOM LEFT
+        if (b.board[0][0] == Pawn::Black || b.board[8][8] == Pawn::Black) {
+            return 1;
+        }
+    }else{
+        return 0;
     }
 }
 
@@ -330,6 +511,7 @@ VickynghiBlackEvaluator::VickynghiBlackEvaluator() {
         return result;
     };
 }
+
 
 
 

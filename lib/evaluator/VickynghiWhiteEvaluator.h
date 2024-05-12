@@ -6,6 +6,12 @@
 #define OSARRACINO_VICKYNGHIWHITEEVALUATOR_H
 
 #include "Evaluator.h"
+#include <functional>
+#include <vector>
+#include <tuple>
+#include <array>
+#include <unordered_map>
+#include <algorithm>
 
 const int VICKYNGHI_EVALUATOR_MAX_DEPTH = 2;
 const int VICKYNGHI_EVALUATOR_SEARCH_WIN_POTENTIAL_MULTIPLIER = 10000;
