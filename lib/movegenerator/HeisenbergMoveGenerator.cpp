@@ -118,8 +118,15 @@ std::vector<Move> HeisenbergMoveGenerator::generate(const Board &b) const {
         if (citadels[pawn.col][pawn.row]) {
             target_col &= (citadel_masks[pawn.col] | b.white_cols[pawn.col] | b.black_cols[pawn.col]);
             target_row &= (citadel_masks[pawn.row] | b.white_rows[pawn.row] | b.black_rows[pawn.row]);
-        }
 
+            // set opposite citadel as obstacle
+            if(pawn.col >= 3 && pawn.col <=5) {
+                target_col |= 1 << (8 - pawn.row);
+            }
+            if(pawn.row >= 3 && pawn.row <=5) {
+                target_row |= 1 << (8 - pawn.col);
+            }
+        }
 
         auto &horizontal_moves {row_to_horizontal_moves[target_row][pawn.col][pawn.row]};
         current_moves.insert(current_moves.end(), horizontal_moves.begin(), horizontal_moves.end());

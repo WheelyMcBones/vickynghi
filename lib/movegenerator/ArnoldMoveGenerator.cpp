@@ -23,9 +23,9 @@ const uint16_t citadel_masks[9] = {
         0b0000000'111000111,
         0b0000000'111101111,
         0b0000000'111111111,
-        0b0000000'111111111,
+        0b0000000'011111110,
         0b0000000'001111100,
-        0b0000000'111111111,
+        0b0000000'011111110,
         0b0000000'111111111,
         0b0000000'111101111,
         0b0000000'111000111,
@@ -85,7 +85,17 @@ std::vector<Move> ArnoldMoveGenerator::generate(const Board &b) const {
         if (citadels[pawn.col][pawn.row]) {
             target_col &= (citadel_masks[pawn.col] | cols[pawn.col]);
             target_row &= (citadel_masks[pawn.row] | rows[pawn.row]);
+
+            // set opposite citadel as obstacle
+            if(pawn.col >= 3 && pawn.col <=5) {
+                target_col |= 1 << (8 - pawn.row);
+            }
+            if(pawn.row >= 3 && pawn.row <=5) {
+                target_row |= 1 << (8 - pawn.col);
+            }
         }
+
+        
 
 
         int horizontal_high_moves = BitUtils::get_high_moves(target_row, pawn.col);
