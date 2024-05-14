@@ -23,18 +23,18 @@ public:
       sleep(2);
 
       if(fork() == 0){
-         system("cd /Users/micheletagliani/Developer/Java/OldJavaProjects/TablutCompetition/Tablut/Executables && java -jar Server.jar 5000 -g > server.txt");
+         system("cd /home/kali/Desktop/TablutCompetition/Tablut/Executables/ && java -jar Server.jar 5000 -g > server.txt");
          exit(0);
       }
 
       sleep(2);
 
       if(fork() == 0){
-         system("/Users/micheletagliani/Developer/C++/vickynghi/cli/osarracino BLACK -t 60 -p trainingwhite > result.txt");
+         system("/home/kali/Desktop/C++/vickynghi/cli/vickynghi BLACK -t 45 -j 4 -p trainingwhite > result.txt");
          exit(0);
       }
 
-      system("/Users/micheletagliani/Developer/C++/vickynghi/cli/osarracino WHITE -t 60 -p trainingwhite > white.txt");
+      system("/home/kali/Desktop/C++/vickynghi/cli/vickynghi WHITE -t 45 -j 4 -p trainingwhite > white.txt");
 
       string mytext;
       char * temp;

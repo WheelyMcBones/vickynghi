@@ -289,6 +289,8 @@ int VickynghiBlackEvaluatorTraining::apply_no_transit_zone(const Board &b) const
             return PENALTY_NO_TRANSIT_ZONE;
         }
     }
+
+    return 0;
 }
 
 

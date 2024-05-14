@@ -9,6 +9,7 @@
 #include "model/Board.h"
 #include <unordered_map>
 #include <vector>
+#include <array>
 
 struct Move {
     Position from;
