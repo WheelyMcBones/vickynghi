@@ -61,11 +61,11 @@ public:
     std::function<int(const Board &b, const int8_t (&matrix)[9][9])> geometry_calculator;
 
     static const uint8_t BWG = 0;
-    static const uint8_t BHW = 10; // Hot area
-    static const uint8_t BMW = 5; // Mild area
-    static const uint8_t PWG = 5; // Purple (diagonals)
-    static const uint8_t GWG = 5; // Green (escape)
-    static const uint8_t MWG = GWG + 5; // Escapes near citadels
+    static const uint8_t BHW = 5; // Hot area
+    static const uint8_t BMW = 23; // Mild area
+    static const uint8_t PWG = 18; // Purple (diagonals)
+    static const uint8_t GWG = 25; // Green (escape)
+    static const uint8_t MWG = -9; // Escapes near citadels
     static const int8_t PENALTY = -100; // Penalty factor closed quadrant
     static const uint8_t empty_row_col_weight = 2;
 
