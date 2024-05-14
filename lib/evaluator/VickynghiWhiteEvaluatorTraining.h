@@ -6,6 +6,12 @@
 #define OSARRACINO_VICKYNGHIWHITEEVALUATORTRAINING_H
 
 #include "Evaluator.h"
+#include <functional>
+#include <vector>
+#include <tuple>
+#include <array>
+#include <unordered_map>
+#include <algorithm>
 
 class VickynghiWhiteEvaluatorTraining : public Evaluator<VickynghiWhiteEvaluatorTraining> {
 private: 
