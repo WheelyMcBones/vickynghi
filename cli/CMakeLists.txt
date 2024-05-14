@@ -1,4 +1,4 @@
-add_executable (osarracino main.cpp
+add_executable (vickynghi main.cpp
     GameManager.cpp GameManager.h
     Player.h
     util/ConfigSet.h
@@ -16,6 +16,8 @@ add_executable (osarracino main.cpp
     profiles/FallbackBlackPlayerProfile.h
     profiles/AggressiveWhitePlayerProfile.h
     profiles/VickynghiBlackPlayerProfile.h
-    profiles/VickynghiWhitePlayerProfile.h)
+    profiles/VickynghiWhitePlayerProfile.h
+    profiles/VickynghiBlackPlayerProfileTraining.h
+    profiles/VickynghiWhitePlayerProfileTraining.h)
 
-target_link_libraries (osarracino libosarracino)
+target_link_libraries (vickynghi libosarracino)

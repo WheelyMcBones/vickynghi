@@ -17,6 +17,7 @@ add_library(libosarracino STATIC
         evaluator/TorettoWhiteEvaluator.cpp evaluator/TorettoWhiteEvaluator.h
         evaluator/TheRockWhiteEvaluator.cpp evaluator/TheRockWhiteEvaluator.h
         evaluator/VickynghiWhiteEvaluator.cpp evaluator/VickynghiWhiteEvaluator.h
+        evaluator/VickynghiWhiteEvaluatorTraining.cpp evaluator/VickynghiWhiteEvaluatorTraining.h
 
         evaluator/BlackEvaluator.cpp evaluator/BlackEvaluator.h
         evaluator/ReverseTorettoBlackEvaluator.cpp evaluator/ReverseTorettoBlackEvaluator.h

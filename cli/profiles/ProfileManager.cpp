@@ -11,6 +11,8 @@
 
 #include "VickynghiBlackPlayerProfile.h"
 #include "VickynghiWhitePlayerProfile.h"
+#include "VickynghiBlackPlayerProfileTraining.h"
+#include "VickynghiWhitePlayerProfileTraining.h"
 
 ProfileManager::ProfileManager(const ConfigSet &config) : config(config) {
     player_map["default"] = [](Player player) -> ProfilePair {
@@ -45,6 +47,20 @@ ProfileManager::ProfileManager(const ConfigSet &config) : config(config) {
     player_map["vickynghi"] = [](Player player) -> ProfilePair {
         if (player == Player::WHITE) {
             return ProfilePair{std::make_unique<VickynghiWhitePlayerProfile>(), std::make_unique<VickynghiWhitePlayerProfile>()};
+        }else{
+            return ProfilePair{std::make_unique<VickynghiBlackPlayerProfile>(), std::make_unique<VickynghiBlackPlayerProfile>()};
+        }
+    };
+    player_map["trainingblack"] = [](Player player) -> ProfilePair {
+        if (player == Player::WHITE) {
+            return ProfilePair{std::make_unique<VickynghiWhitePlayerProfile>(), std::make_unique<VickynghiWhitePlayerProfile>()};
+        }else{
+            return ProfilePair{std::make_unique<VickynghiBlackPlayerProfileTraining>(), std::make_unique<VickynghiBlackPlayerProfileTraining>()};
+        }
+    };
+    player_map["trainingwhite"] = [](Player player) -> ProfilePair {
+        if (player == Player::WHITE) {
+            return ProfilePair{std::make_unique<VickynghiWhitePlayerProfileTraining>(), std::make_unique<VickynghiWhitePlayerProfileTraining>()};
         }else{
             return ProfilePair{std::make_unique<VickynghiBlackPlayerProfile>(), std::make_unique<VickynghiBlackPlayerProfile>()};
         }

@@ -14,8 +14,8 @@ public:
    {
       pid_t pid = 0; //getpid();
 
-      std::ofstream MyFile("/tmp/tablut/playerHeuristic"+std::to_string(pid));
-      MyFile << std::to_string(static_cast<int>(x[0])) + ","+  std::to_string(static_cast<int>(x[1])) +","+std::to_string(static_cast<int>(x[2])) +","+std::to_string(static_cast<int>(x[3]))+","+std::to_string(static_cast<int>(x[4]))+","+std::to_string(static_cast<int>(x[5]))+","+std::to_string(static_cast<int>(x[6])) << std::endl;
+      std::ofstream MyFile("/tmp/tablut/playerHeuristicWhite"+std::to_string(pid));
+      MyFile << std::to_string(static_cast<int>(x[0])) + ","+  std::to_string(static_cast<int>(x[1])) +","+std::to_string(static_cast<int>(x[2])) +","+std::to_string(static_cast<int>(x[3]))+","+std::to_string(static_cast<int>(x[4])) << std::endl;
       MyFile.close();
 
       std::cout << std::to_string(pid) << std::endl;
@@ -23,25 +23,25 @@ public:
       sleep(2);
 
       if(fork() == 0){
-         system("cd /home/kali/Desktop/TablutCompetition/Tablut/Executables/ && java -jar Server.jar 5000 -g > server.txt");
+         system("cd /Users/micheletagliani/Developer/Java/OldJavaProjects/TablutCompetition/Tablut/Executables && java -jar Server.jar 5000 -g > server.txt");
          exit(0);
       }
 
       sleep(2);
 
       if(fork() == 0){
-         system("/home/kali/Desktop/C++/vickynghi/cli/vickynghi WHITE -t 10 -j 1 -p trainingBlack > white.txt");
+         system("/Users/micheletagliani/Developer/C++/vickynghi/cli/osarracino BLACK -t 60 -p trainingwhite > result.txt");
          exit(0);
       }
 
-      system("/home/kali/Desktop/C++/vickynghi/cli/vickynghi BLACK -t 10 -j 1 -p trainingBlack > result.txt");
+      system("/Users/micheletagliani/Developer/C++/vickynghi/cli/osarracino WHITE -t 60 -p trainingwhite > white.txt");
 
       string mytext;
       char * temp;
       int turn_count = 1;
       int white_count = 1;
       int black_count = 1;
-      int black_win = 0;
+      int white_win = 0;
       std::ifstream MyReadFile("/tmp/tablut/playerBlack"+std::to_string(pid));
       cout << "READING" << endl;
       while(getline(MyReadFile, mytext)){
@@ -50,8 +50,8 @@ public:
 
          temp = strtok(cstr,",");
          string s(temp);
-         if (s.compare("BLACKWIN") == 0) {
-            black_win = 1;
+         if (s.compare("WHITEWIN") == 0) {
+            white_win = 1;
          }
 
          temp = strtok(NULL,",");
@@ -65,8 +65,8 @@ public:
       }
 
       cout << "END READ" << endl;
-      cout << black_win*(black_count + (8 - white_count) + (30 - turn_count)) + 0.1 << endl;
-      T obj = black_win*(black_count + (8 - white_count) + (30 - turn_count)) + 0.1;
+      cout << white_win*(white_count + (16 - black_count) + (30 - turn_count)) << endl;
+      T obj = white_win*(white_count + (16 - black_count) + (30 - turn_count));
       return {obj};
    }
 };
@@ -86,19 +86,17 @@ int main()
 {
    // initializing parameters lower and upper bounds
    // an initial value can be added inside the initializer list after the upper bound
-   galgo::Parameter<float> HOT_AREA({0,40,10});
-   galgo::Parameter<float> MIDDLE_AREA({0,20, 5});
-   galgo::Parameter<float> COLD_AREA({0,10, 1});
-   galgo::Parameter<float> PENALTY_FACTOR({-40,0, -5});
-   galgo::Parameter<float> STRONG_MULT({20,60, 40});
-   galgo::Parameter<float> LIGHT_MULT({0,20,10});
-   galgo::Parameter<float> NO_TRANSIT({-100,0,-25});
+   galgo::Parameter<float> HOT_AREA({-10,30,10});
+   galgo::Parameter<float> MIDDLE_AREA({-10, 30, 5});
+   galgo::Parameter<float> PURPLE({-10, 30, 5});
+   galgo::Parameter<float> GREEN({-10, 30, 5});
+   galgo::Parameter<float> MAGENTA({-10, 30, 5});
 
    // here both parameter will be encoded using 16 bits the default value inside the template declaration
    // this value can be modified but has to remain between 1 and 64
 
    // initiliazing genetic algorithm
-   galgo::GeneticAlgorithm<float> ga(MyObjective<float>::Objective,3,3,true,HOT_AREA, MIDDLE_AREA, COLD_AREA, PENALTY_FACTOR, STRONG_MULT, LIGHT_MULT, NO_TRANSIT);
+   galgo::GeneticAlgorithm<float> ga(MyObjective<float>::Objective,3,3,true,HOT_AREA, MIDDLE_AREA, PURPLE, GREEN, MAGENTA);
 
    // setting constraints
    // ga.Constraint = MyConstraint;

@@ -2,38 +2,32 @@
 // Created by freddy on 13/05/19.
 //
 
-#ifndef OSARRACINO_VICKYNGHIWHITEEVALUATOR_H
-#define OSARRACINO_VICKYNGHIWHITEEVALUATOR_H
+#ifndef OSARRACINO_VICKYNGHIWHITEEVALUATORTRAINING_H
+#define OSARRACINO_VICKYNGHIWHITEEVALUATORTRAINING_H
 
 #include "Evaluator.h"
-#include <functional>
-#include <vector>
-#include <tuple>
-#include <array>
-#include <unordered_map>
-#include <algorithm>
 
-const int VICKYNGHI_EVALUATOR_MAX_DEPTH = 2;
-const int VICKYNGHI_EVALUATOR_SEARCH_WIN_POTENTIAL_MULTIPLIER = 10000;
-const int VICKYNGHI_EVALUATOR_SEARCH_WIN_MULTIPLIER = 200000;
-const int VICKYNGHI_EVALUATOR_SEARCH_LOSE_MULTIPLIER = -200000;
-const int VICKYNGHI_EVALUATOR_FREE_WINPOINT_MULTIPLIER = 100;
-const int VICKYNGHI_EVALUATOR_WHITE_WINPOINT_MULTIPLIER = 200;
-const int VICKYNGHI_EVALUATOR_BLACK_WINPOINT_MULTIPLIER = -300;
-const int VICKYNGHI_EVALUATOR_WHITE_PAWN_MULTIPLIER = 200;
-const int VICKYNGHI_EVALUATOR_BLACK_PAWN_MULTIPLIER = -500;
-const int VICKYNGHI_EVALUATOR_BLACK_HIGH_RISK_MULTIPLIER = -300;
-const int VICKYNGHI_EVALUATOR_BLACK_RISK_MULTIPLIER = -300;
-const int VICKYNGHI_EVALUATOR_BLACK_SURROUNDED_MULTIPLIER = -1000;
-
-class VickynghiWhiteEvaluator : public Evaluator<VickynghiWhiteEvaluator> {
+class VickynghiWhiteEvaluatorTraining : public Evaluator<VickynghiWhiteEvaluatorTraining> {
+private: 
+        const int VICKYNGHI_EVALUATOR_MAX_DEPTH = 2;
+        const int VICKYNGHI_EVALUATOR_SEARCH_WIN_POTENTIAL_MULTIPLIER = 10000;
+        const int VICKYNGHI_EVALUATOR_SEARCH_WIN_MULTIPLIER = 200000;
+        const int VICKYNGHI_EVALUATOR_SEARCH_LOSE_MULTIPLIER = -200000;
+        const int VICKYNGHI_EVALUATOR_FREE_WINPOINT_MULTIPLIER = 100;
+        const int VICKYNGHI_EVALUATOR_WHITE_WINPOINT_MULTIPLIER = 200;
+        const int VICKYNGHI_EVALUATOR_BLACK_WINPOINT_MULTIPLIER = -300;
+        const int VICKYNGHI_EVALUATOR_WHITE_PAWN_MULTIPLIER = 200;
+        const int VICKYNGHI_EVALUATOR_BLACK_PAWN_MULTIPLIER = -500;
+        const int VICKYNGHI_EVALUATOR_BLACK_HIGH_RISK_MULTIPLIER = -300;
+        const int VICKYNGHI_EVALUATOR_BLACK_RISK_MULTIPLIER = -300;
+        const int VICKYNGHI_EVALUATOR_BLACK_SURROUNDED_MULTIPLIER = -1000;
 public:
-    VickynghiWhiteEvaluator();
+    VickynghiWhiteEvaluatorTraining();
     int evaluate(const Board &b) const;
     int evaluate(const Board &b, bool print) const;
 
     std::string get_name() const {
-        return "VickynghiWhiteEvaluator";
+        return "VickynghiWhiteEvaluatorTraining";
     }
 
     int perform_search(const uint16_t *cols, const uint16_t *rows, int depth, int king_col, int king_row,
@@ -61,11 +55,11 @@ public:
     std::function<int(const Board &b, const int8_t (&matrix)[9][9])> geometry_calculator;
 
     static const uint8_t BWG = 0;
-    static const uint8_t BHW = 10; // Hot area
-    static const uint8_t BMW = 5; // Mild area
-    static const uint8_t PWG = 5; // Purple (diagonals)
-    static const uint8_t GWG = 5; // Green (escape)
-    static const uint8_t MWG = GWG + 5; // Escapes near citadels
+    int8_t BHW; // Hot area
+    int8_t BMW; // Mild area
+    int8_t PWG; // Purple (diagonals)
+    int8_t GWG; // Green (escape)
+    int8_t MWG; // Escapes near citadels
     static const int8_t PENALTY = -100; // Penalty factor closed quadrant
     static const uint8_t empty_row_col_weight = 2;
 
